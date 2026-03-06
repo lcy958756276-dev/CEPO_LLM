@@ -57,10 +57,10 @@ train_loader = DataLoader(train_data, batch_size=1, shuffle=True)
 save_every=1#验证，先改一下！！！！！！！！！！！！！！！！！！！！！！！！！！！！！！！！！
 total_step = 0
 global_loss = 0.0
-num_epochs = 3
+num_epochs = 2#验证，先改一下！！！！！！！！！！！！！！！！！！！！！！！！！！！！！！！！！
 logging_steps = 5
 max_grad_norm = 1.0
-accum_step=4
+accum_step=1#验证，先改一下！！！！！！！！！！！！！！！！！！！！！！！！！！！！！！！！！
 best_loss = float("inf")
 total_norm=0.0
 
@@ -158,11 +158,11 @@ for epoch in range(num_epochs):
             prompt=sample["prompt"],
             good=sample["chosen_list"],
             bad_blocks=sample["reject"],
-            beta=1.0,
-            lambda_eq=0.1,
+            beta=0.3,
+            lambda_eq=0.2,
             device="cuda"
         )
-        print(f"lossrank:{loss_rank1.item():.4f},losseq:{loss_eq1.item():.4f}")
+        print(f"lossrank:{loss_rank1.item():.4f},losseq:{loss_eq1.item()}")
         loss=loss / accum_step
         loss.backward()#计算梯度，不更新参数，梯度会累积accumstep次，直到zero_grad() 在更新后清空梯度
         loss_val = loss.item()*accum_step

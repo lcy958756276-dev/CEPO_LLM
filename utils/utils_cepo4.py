@@ -47,7 +47,7 @@ def cepo_loss_separate(
     prompt: str,
     good: list[str],
     bad_blocks: list[list[str]],
-    beta: float = 0.5,
+    beta: float = 0.3,
     lambda_eq: float = 0.2,
     device: str = "cuda"
 ):
@@ -58,7 +58,7 @@ def cepo_loss_separate(
     - 单样本内合并 forward
     """
 
-    prompt_ids = tokenizer(prompt)["input_ids"]
+    prompt_ids = tokenizer(prompt,add_special_tokens=False)["input_ids"]
     prompt_len = len(prompt_ids)
 
     # ----------------------------------------
@@ -152,5 +152,7 @@ def cepo_loss_separate(
     # 6️⃣ 总 loss
     # ----------------------------------------
     total_loss = loss_rank + lambda_eq * loss_eq
+    print("good_scores:", good_scores.detach().cpu())
+    print("block_scores:", block_scores)
 
     return total_loss,loss_rank,loss_eq
