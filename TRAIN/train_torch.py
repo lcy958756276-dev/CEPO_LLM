@@ -86,7 +86,7 @@ replace_linear_with_lora(
     r=8,
     alpha=32,
     dropout_p=0.05,
-    target_modules=("q_proj", "k_proj", "v_proj", "o_proj")
+    target_modules=("q_proj", "k_proj", "v_proj", "o_proj","gate_proj","up_proj","down_proj")
 )
 
 
@@ -158,7 +158,7 @@ for epoch in range(num_epochs):
             good=sample["chosen_list"],
             bad_blocks=sample["reject"],
             beta=0.3,
-            lambda_eq=0.2,
+            lambda_eq=0.8,
             device="cuda"
         )
         print(f"lossrank:{loss_rank1.item():.4f},losseq:{loss_eq1.item():.8f}")

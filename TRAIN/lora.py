@@ -83,7 +83,7 @@ def replace_linear_with_lora(
     r: int = 8,
     alpha: int = 32,
     dropout_p: float = 0.05,
-    target_modules=("q_proj", "k_proj", "v_proj", "o_proj"),
+    target_modules=("q_proj", "k_proj", "v_proj", "o_proj","gate_proj","up_proj","down_proj"),
 ):
     """
     递归遍历 module 树，将指定名字的 Linear 替换为 LoRALinear。
