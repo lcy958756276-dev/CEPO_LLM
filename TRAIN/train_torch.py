@@ -162,7 +162,7 @@ for epoch in range(num_epochs):
             lambda_eq=0.2,
             device="cuda"
         )
-        print(f"lossrank:{loss_rank1.item():.4f},losseq:{loss_eq1.item()}")
+        print(f"lossrank:{loss_rank1.item():.4f},losseq:{loss_eq1.item():.8f}")
         loss=loss / accum_step
         loss.backward()#计算梯度，不更新参数，梯度会累积accumstep次，直到zero_grad() 在更新后清空梯度
         loss_val = loss.item()*accum_step
