@@ -50,7 +50,7 @@ model_path = "Qwen/Qwen2.5-1.5B-Instruct"
 #policy_model → bf16
 
 # ===== 数据 =====
-df = pd.read_json(data_path)
+df = pd.read_json(data_path,lines=True)
 ds = Dataset.from_pandas(df)
 train_data = ds
 train_loader = DataLoader(train_data, batch_size=1, shuffle=True)
