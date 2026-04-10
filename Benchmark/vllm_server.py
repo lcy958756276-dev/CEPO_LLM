@@ -1,7 +1,7 @@
 import os 
 from vllm import AsyncEngineArgs,AsyncLLMEngine
 from vllm.sampling_params import SamplingParams
-from transformers import AutoTokenizer, GenerationConfig
+from modelscope import AutoTokenizer, GenerationConfig,snapshot_download
 from fastapi import FastAPI, Request
 from fastapi.responses import JSONResponse, Response, StreamingResponse
 import uvicorn
@@ -83,7 +83,7 @@ def remove_stop_words(token_ids,stop_words_ids):
 app=FastAPI()
 
 # vLLM参数
-model_dir = "Qwen/Qwen2.5-1.8B-Instruct"
+model_dir = "Qwen/Qwen2.5-1.8B-chat"
 tensor_parallel_size=1
 gpu_memory_utilization=0.6
 #quantization='gptq'#量化
@@ -94,7 +94,7 @@ dtype='float16'
 def load_vllm():
     global generation_config,tokenizer,stop_words_ids,engine    
     # 模型下载
-    # snapshot_download(model_dir)
+    snapshot_download(model_dir)
     # 模型基础配置
     generation_config=GenerationConfig.from_pretrained(model_dir,trust_remote_code=True)
     # 加载分词器
@@ -114,7 +114,7 @@ def load_vllm():
     args.dtype=dtype
     args.max_num_seqs=15    # batch最大20条样本
     # 加载模型
-    # os.environ['VLLM_USE_MODELSCOPE']='True'
+    os.environ['VLLM_USE_MODELSCOPE']='True'
     engine=AsyncLLMEngine.from_engine_args(args)
     return generation_config,tokenizer,stop_words_ids,engine
 
