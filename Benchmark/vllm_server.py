@@ -94,7 +94,7 @@ dtype='float16'
 def load_vllm():
     global generation_config,tokenizer,stop_words_ids,engine    
     # 模型下载
-    snapshot_download(model_dir)
+    # snapshot_download(model_dir)
     # 模型基础配置
     generation_config=GenerationConfig.from_pretrained(model_dir,trust_remote_code=True)
     # 加载分词器
@@ -114,7 +114,7 @@ def load_vllm():
     args.dtype=dtype
     args.max_num_seqs=15    # batch最大20条样本
     # 加载模型
-    os.environ['VLLM_USE_MODELSCOPE']='True'
+    # os.environ['VLLM_USE_MODELSCOPE']='True'
     engine=AsyncLLMEngine.from_engine_args(args)
     return generation_config,tokenizer,stop_words_ids,engine
 
