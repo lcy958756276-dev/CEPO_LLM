@@ -48,10 +48,13 @@ gpu_memory_utilization=0.6
 #quantization='gptq'#量化
 quantization=None
 dtype='float16'
-
+generation_config = None
+tokenizer = None
+stop_words_ids = None
+engine = None
 # vLLM模型加载
 def load_vllm():
-    global generation_config,tokenizer,stop_words_ids,engine    
+    # global generation_config, tokenizer, stop_words_ids, engine       
     # 模型下载
     snapshot_download(model_dir)
     # 模型基础配置
@@ -81,7 +84,6 @@ def load_vllm():
     engine=AsyncLLMEngine.from_engine_args(args)
     return generation_config,tokenizer,stop_words_ids,engine
 
-generation_config,tokenizer,stop_words_ids,engine=load_vllm()
 
 # 用户停止句匹配
 def match_user_stop_words(response_token_ids,user_stop_tokens):
@@ -172,6 +174,7 @@ async def chat(request: Request):
 
 
 if __name__=='__main__':
+    generation_config,tokenizer,stop_words_ids,engine=load_vllm()
     uvicorn.run(app,
                 host="0.0.0.0",
                 port=8000,
