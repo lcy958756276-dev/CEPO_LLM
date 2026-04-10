@@ -83,7 +83,7 @@ def remove_stop_words(token_ids,stop_words_ids):
 app=FastAPI()
 
 # vLLM参数
-model_dir = "Qwen/Qwen2.5-1.8B-chat"
+model_dir = "Qwen/Qwen2.5-1.8B-Instruct"
 tensor_parallel_size=1
 gpu_memory_utilization=0.6
 #quantization='gptq'#量化
