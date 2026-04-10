@@ -111,13 +111,13 @@ async def chat(request: Request):
     for words in user_stop_words:
         user_stop_tokens.append(tokenizer.encode(words))
     
-    # 构造prompt
- prompt_text, prompt_tokens = _build_prompt(
-    tokenizer,
-    query,
-    history=history,
-    system=system
-)
+        # 构造prompt
+    prompt_text, prompt_tokens = _build_prompt(
+        tokenizer,
+        query,
+        history=history,
+        system=system
+    )
         
     # vLLM请求配置
     sampling_params=SamplingParams(stop_token_ids=stop_words_ids, 
