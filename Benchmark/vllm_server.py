@@ -1,7 +1,7 @@
 import os 
 from vllm import AsyncEngineArgs,AsyncLLMEngine
 from vllm.sampling_params import SamplingParams
-from modelscope import AutoTokenizer, GenerationConfig,snapshot_download
+from transformers import AutoTokenizer, GenerationConfig
 from fastapi import FastAPI, Request
 from fastapi.responses import JSONResponse, Response, StreamingResponse
 import uvicorn
