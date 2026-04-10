@@ -88,7 +88,7 @@ class BenchMarkRunner:#压测调度器
                     print("done one request")
 
 def main():
-    concurrency = 40#50 # 并发数
+    concurrency = 25#50 # 并发数
     logger.info("Preparing for benchmark.")
     testset = json.load(open("./data/summary_test.json"))
     input_requests = [item["instruction"] for item in testset] #提取prompt

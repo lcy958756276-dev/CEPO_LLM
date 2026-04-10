@@ -15,7 +15,7 @@ app=FastAPI()
 # vLLM参数
 model_dir = "Qwen/Qwen2.5-1.8B-Instruct"
 tensor_parallel_size=1
-gpu_memory_utilization=0.7
+gpu_memory_utilization=0.6
 #quantization='gptq'#量化
 quantization=None
 dtype='float16'
@@ -42,7 +42,7 @@ def load_vllm():
     args.quantization=quantization
     args.gpu_memory_utilization=gpu_memory_utilization
     args.dtype=dtype
-    args.max_num_seqs=20    # batch最大20条样本
+    args.max_num_seqs=15    # batch最大20条样本
     # 加载模型
     os.environ['VLLM_USE_MODELSCOPE']='True'
     engine=AsyncLLMEngine.from_engine_args(args)
@@ -131,6 +131,6 @@ async def chat(request: Request):
 
 if __name__=='__main__':
     uvicorn.run(app,
-                host=None,
+                host="0.0.0.0",
                 port=8000,
                 log_level="debug")
