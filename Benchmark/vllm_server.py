@@ -99,9 +99,13 @@ def load_vllm():
     generation_config=GenerationConfig.from_pretrained(model_dir,trust_remote_code=True)
     # 加载分词器
     tokenizer=AutoTokenizer.from_pretrained(model_dir,trust_remote_code=True)
-    tokenizer.eos_token_id=generation_config.eos_token_id
+    # 处理 eos_token_id（兼容 list）
+    eos_id = tokenizer.eos_token_id
+    if isinstance(eos_id, list):
+        eos_id = eos_id[0]
+    # tokenizer.eos_token_id=generation_config.eos_token_id
     # 推理终止词
-    stop_words_ids=[tokenizer.im_start_id,tokenizer.im_end_id,tokenizer.eos_token_id]
+    stop_words_ids=[tokenizer.im_start_id,tokenizer.im_end_id,tokenizer.eos_id]
     # vLLM基础配置
     args=AsyncEngineArgs(model_dir)
     args.worker_use_ray=False
