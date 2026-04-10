@@ -94,9 +94,15 @@ def match_user_stop_words(response_token_ids,user_stop_tokens):
             return True  # 命中停止句, 返回True
     return False
 
+def init_model():
+    global generation_config, tokenizer, stop_words_ids, engine
+    if engine is None:
+        generation_config, tokenizer, stop_words_ids, engine = load_vllm()
+
 # chat对话接口
 @app.post("/chat")
 async def chat(request: Request):
+    init_model()
     request=await request.json()
     
     query=request.get('query',None)
@@ -128,7 +134,7 @@ async def chat(request: Request):
                                     top_k=-1 if generation_config.top_k == 0 else generation_config.top_k,
                                     temperature=generation_config.temperature,
                                     repetition_penalty=generation_config.repetition_penalty,
-                                    max_tokens=generation_config.max_new_tokens)
+                                    max_tokens=20)
     # vLLM异步推理（在独立线程中阻塞执行推理，主线程异步等待完成通知）
     request_id=str(uuid.uuid4().hex)
     results_iter=engine.generate(prompt=None,sampling_params=sampling_params,prompt_token_ids=prompt_tokens,request_id=request_id)
@@ -173,9 +179,8 @@ async def chat(request: Request):
 
 
 
-if __name__=='__main__':
-    generation_config,tokenizer,stop_words_ids,engine=load_vllm()
-    uvicorn.run(app,
-                host="0.0.0.0",
-                port=8000,
-                log_level="debug")
+if __name__ == '__main__':
+    import multiprocessing
+    multiprocessing.set_start_method("spawn", force=True)
+
+    uvicorn.run(app, host="0.0.0.0", port=8000)
