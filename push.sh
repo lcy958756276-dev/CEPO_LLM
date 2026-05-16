@@ -10,7 +10,7 @@ set -e
 # ==============================
 # 配置
 # ==============================
-REPO_URL="git@github.com:lcy958756276-dev/CEPO_LLM.git"
+REPO_URL="https://github.com/lcy958756276-dev/CEPO_LLM.git"
 
 # 提交信息，默认使用当前时间
 COMMIT_MSG=${1:-"auto update $(date '+%Y-%m-%d %H:%M:%S')"}
